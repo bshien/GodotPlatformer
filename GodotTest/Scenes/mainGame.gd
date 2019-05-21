@@ -52,44 +52,7 @@ func _physics_process(delta):
 	var gravity = 2*jumpHeight/(jumpTime*jumpTime)
 	velocity.y += gravity*delta
 	
-	var onFloor = is_on_floor()
-	var onWall = is_on_wall()
-	
-	#movement
-	if(Input.is_action_pressed("ui_right")):
-		move += 1
-		#sprite.flip_h = velocity.x < 0
-		sprite.flip_h = false
-		if onFloor:
-			playAnim("playerRun")
-	elif Input.is_action_pressed("ui_left"):
-		move -= 1
-		#sprite.flip_h = velocity.x < 0
-		sprite.flip_h = true
-		if onFloor:
-			playAnim("playerRun")
-	else:
-		move = 0
-		if canIdle:
-			playAnim("playerIdle")
-		
-	if Input.is_action_just_pressed("jump"):
-		#Ground jump
-		if onFloor:
-			velocity.y = -2*jumpHeight/jumpTime
-			playAnim("playerJump")
-		#Wall jump
-		elif onWall:
-			canFall = false
-			playAnim("playerFlip")
-			velocity.y = -2*jumpHeight/jumpTime
-		
-	#falling animation
-	if !onFloor and velocity.y > 0 and canFall:
-		playAnim("playerFalling")
 
-	#attack animations
-	if Input.is_action_just_pressed("light attack") and canFall:
 		#animation runs on a different frame system than the script
 		#I set the canFall value in animation and it kept getting cancelled 
 		#do state checks in script, not animation, as they are faster here (constant vs variable update)
